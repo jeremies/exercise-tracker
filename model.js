@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
 
 var Schema = mongoose.Schema;
 

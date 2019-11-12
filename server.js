@@ -1,12 +1,8 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const model = require('./model.js')
 
 const cors = require('cors')
-
-const mongoose = require('mongoose')
-mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
 
 app.use(cors())
 
@@ -17,6 +13,22 @@ app.use(bodyParser.json())
 app.use(express.static('public'))
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
+});
+
+
+var createUser = require('./model.js').createUser;
+console.log(createUser);
+
+app.post("/api/exercise/new-user", function (req, res, next) {
+  var username = req.body.username;
+  
+  console.log("entro")
+  createUser(username, function(err, data) {
+    if (err) {
+      return next(err);
+    }
+    res.json(data);
+  });
 });
 
 
@@ -43,16 +55,6 @@ app.use((err, req, res, next) => {
   res.status(errCode).type('txt')
     .send(errMessage)
 })
-
-var createUser = model.createUser;
-
-app.post("/api/exercise/new-user", function (req, res, next) {
-  var username = req.body.username;
-  
-  createUser(username, function(err, data) {
-    
-  });
-});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
