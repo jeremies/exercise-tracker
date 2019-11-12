@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const model = require('./model.js')
 
 const cors = require('cors')
 
@@ -42,6 +43,16 @@ app.use((err, req, res, next) => {
   res.status(errCode).type('txt')
     .send(errMessage)
 })
+
+var createUser = model.createUser;
+
+app.post("/api/exercise/new-user", function (req, res, next) {
+  var username = req.body.username;
+  
+  createUser(username, function(err, data) {
+    
+  });
+});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
