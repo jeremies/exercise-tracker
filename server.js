@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+var mongoose = require('mongoose');
+
+mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
 
 const cors = require('cors')
 
@@ -15,9 +18,25 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
+var Schema = mongoose.Schema;
 
-var createUser = require('./model.js').createUser;
-console.log(createUser);
+var userSchema = new Schema({
+  username: String
+});
+
+var User = mongoose.model('User', userSchema);
+
+var createUser = function(username, done) {
+  var user = new User({ username: username });
+  user.save(function (err,data) {
+    if (err) {
+      done(err);
+    }
+    else {
+      done(null, data);
+    }
+  })
+};
 
 app.post("/api/exercise/new-user", function (req, res, next) {
   var username = req.body.username;
@@ -27,7 +46,12 @@ app.post("/api/exercise/new-user", function (req, res, next) {
     if (err) {
       return next(err);
     }
-    res.json(data);
+    
+    var res_username = {
+      username: data.username,
+      _id: data._id
+    }
+    res.json(res_username);
   });
 });
 
