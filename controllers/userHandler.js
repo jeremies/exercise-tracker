@@ -7,11 +7,11 @@ exports.createUser = function (req, res, next) {
     if (err) {
       return next(err);
     }
-    var res_username = {
-      username: data.username,
-      _id: data._id
-    }
-    res.json(res_username);
+
+    res.json({
+      _id: data._id,
+      username: data.username
+    });
   });
 };
 
@@ -47,6 +47,16 @@ exports.addExercise = function (req, res, next) {
     }
     user.exercises.push(exercise);
     
-    user.save()
+    user.save(function (err,data) {
+      if (err) {
+        return next(err);
+      }
+
+      res.json({
+        _id: data._id,
+        username: data.username,
+        
+      });
+    });
   });
 }
