@@ -55,7 +55,7 @@ exports.addExercise = function (req, res, next) {
       res.json({
         _id: data._id,
         username: data.username,
-        
+        exercises: data.exercises
       });
     });
   });

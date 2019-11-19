@@ -26,6 +26,8 @@ app.post("/api/exercise/new-user", userHandler.createUser);
 
 app.get("/api/exercise/users", userHandler.getUsers);
 
+app.post("/api/exercise/add", userHandler.addExercise);
+
 // Not found middleware
 app.use((req, res, next) => {
   return next({status: 404, message: 'not found'})
