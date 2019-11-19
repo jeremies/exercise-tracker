@@ -21,12 +21,32 @@ exports.getUsers = function (req, res, next) {
     if (err) {
       return next(err);
     }
-    else {
-      res.json(data);
-    }
+    res.json(data);
   });
 };
 
 exports.addExercise = function (req, res, next) {
-  
+  var userId = req.body.userId;
+  var description = req.body.description;
+  var duration = req.body.duration;
+  var date = req.body.date;
+  User.findById(userId, function (err, user) {
+    if (err) {
+      return next(err);
+    }
+    if (!user.exercises) {
+      user.exercises = [];
+    }
+    var exercise = {
+      description: description,
+      duration: duration
+    };
+    
+    if (date != "") {
+      exercise.date = new Date(date);
+    }
+    user.exercises.push(exercise);
+    
+    user.save()
+  });
 }
