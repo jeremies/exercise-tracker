@@ -26,3 +26,7 @@ exports.getUsers = function (req, res, next) {
     }
   });
 };
+
+exports.addExercise = function (req, res, next) {
+  
+}
