@@ -3,6 +3,8 @@ const app = express()
 const bodyParser = require('body-parser')
 var mongoose = require('mongoose');
 
+var userHandler = require('./controllers/userHandler.js');
+
 mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
 
 const cors = require('cors')
@@ -19,40 +21,10 @@ app.get('/', (req, res) => {
 });
 
 
-app.post("/api/exercise/new-user", function (req, res, next) {
-  var username = req.body.username;
-  createUser(username, function(err, data) {
-    if (err) {
-      return next(err);
-    }
-    
-    var res_username = {
-      username: data.username,
-      _id: data._id
-    }
-    res.json(res_username);
-  });
-});
+app.post("/api/exercise/new-user", userHandler.newUser);
 
-var getUsers = function (done) {
-  User.find({}, 'username _id', function(err, data) {
-    if (err) {
-      done(err);
-    }
-    else {
-      done(null, data);
-    }
-  })
-};
 
-app.get("/api/exercise/users", function (req, res, next) {
-  getUsers(function(err, data) {
-    if (err) {
-      return next(err);
-    }
-    res.json(data);
-  })
-});
+app.get("/api/exercise/users", userHandler.getUsers);
 
 // Not found middleware
 app.use((req, res, next) => {
