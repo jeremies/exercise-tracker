@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.post("/api/exercise/new-user", userHandler.newUser);
+app.post("/api/exercise/new-user", userHandler.createUser);
 
 
 app.get("/api/exercise/users", userHandler.getUsers);
