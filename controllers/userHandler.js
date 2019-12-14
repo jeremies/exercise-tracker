@@ -68,7 +68,7 @@ exports.getExerciseLog = function (req, res, next) {
   let from = new Date(req.query.from);
   if (from.toDateString() == "Invalid Date") from = undefined;
   let to = new Date(req.query.to);
-  if (to.toDateString() == "Invalid Date")  = undefined;
+  if (to.toDateString() == "Invalid Date") to = undefined;
   let limit = req.query.limit;
   User.findById(userId, function (err, user) {
     if (err) {
@@ -76,7 +76,7 @@ exports.getExerciseLog = function (req, res, next) {
     }
     user = user.toObject();
     user.log = user.log.filter( exercise => {
-      return 
+      return (!to || exercise.date < to) && (!from || exercise.date > from);
     });
     if (limit) {
       user.log = user.log.slice(0,limit);
