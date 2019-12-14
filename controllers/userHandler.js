@@ -3,12 +3,14 @@ var User = require('../models/user.js');
 exports.createUser = function (req, res, next) {
   var username = req.body.username;
   var user = new User({ username: username });
-  user.save(function (err,data) {
+  user.save(function (err,savedUser) {
     if (err) {
       return next(err);
     }
-    
-    res.json(data);
+    savedUser = savedUser.toObject();
+    delete savedUser.log;
+    delete savedUser.__v;
+    res.json(savedUser);
   });
 };
 
@@ -44,17 +46,17 @@ exports.addExercise = function (req, res, next) {
     }
     user.log.push(exercise);
     
-    user.save(function (err,user) {
+    user.save(function (err,savedUser) {
       if (err) {
         return next(err);
       }
       
-      let last_exercise = user.log[user.log.length - 1];
+      let last_exercise = savedUser.log[savedUser.log.length - 1];
       res.json({
-        username: user.username,
+        username: savedUser.username,
         description: last_exercise.description,
         duration: last_exercise.duration,
-        _id: user._id,
+        _id: savedUser._id,
         date: last_exercise.date
       });
     });
@@ -67,7 +69,10 @@ exports.getExerciseLog = function (req, res, next) {
     if (err) {
       return next(err);
     }
+    user = user.toObject();
     user.count = user.log.length;
+    delete user.__v;
+    user.log.forEach(exercise => { delete exercise._id; });
     res.json(user);
   });
 }
