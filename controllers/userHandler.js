@@ -32,7 +32,7 @@ exports.addExercise = function (req, res, next) {
       return next(err);
     }
     if (!user.log) {
-      user.exercises = [];
+      user.log = [];
     }
     var exercise = {
       description: description,
@@ -42,19 +42,19 @@ exports.addExercise = function (req, res, next) {
     if (date != "") {
       exercise.date = new Date(date);
     }
-    user.exercises.push(exercise);
+    user.log.push(exercise);
     
-    user.save(function (err,data) {
+    user.save(function (err,user) {
       if (err) {
         return next(err);
       }
       
-      let last_exercise = data.exercises[data.exercises.length - 1];
+      let last_exercise = user.log[user.log.length - 1];
       res.json({
-        username: data.username,
+        username: user.username,
         description: last_exercise.description,
         duration: last_exercise.duration,
-        _id: data._id,
+        _id: user._id,
         date: last_exercise.date
       });
     });
@@ -67,6 +67,7 @@ exports.getExerciseLog = function (req, res, next) {
     if (err) {
       return next(err);
     }
+    user.count = user.log.length;
     res.json(user);
   });
 }
