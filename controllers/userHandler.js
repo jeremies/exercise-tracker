@@ -51,11 +51,14 @@ exports.addExercise = function (req, res, next) {
       if (err) {
         return next(err);
       }
-
+      
+      let last_exercise = data.exercises[data.exercises.length - 1];
       res.json({
-        _id: data._id,
         username: data.username,
-        exercises: data.exercises
+        description: last_exercise.description,
+        duration: last_exercise.duration,
+        _id: data._id,
+        date: last_exercise.date
       });
     });
   });
