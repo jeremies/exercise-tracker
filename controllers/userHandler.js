@@ -64,12 +64,17 @@ exports.addExercise = function (req, res, next) {
 }
 
 exports.getExerciseLog = function (req, res, next) {
-  var userId = req.query.userId;
+  let userId = req.query.userId;
+  let limit = req.query.limit;
   User.findById(userId, function (err, user) {
     if (err) {
       return next(err);
     }
     user = user.toObject();
+    if (limit) {
+      user.log = user.log.slice(limit - 1);
+      console.log(user.log);
+    }
     user.count = user.log.length;
     delete user.__v;
     user.log.forEach(exercise => { delete exercise._id; });
