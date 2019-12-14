@@ -8,10 +8,7 @@ exports.createUser = function (req, res, next) {
       return next(err);
     }
     
-    res.json({
-      _id: data._id,
-      username: data.username
-    });
+    res.json(data);
   });
 };
 
@@ -34,7 +31,7 @@ exports.addExercise = function (req, res, next) {
     if (err) {
       return next(err);
     }
-    if (!user.exercises) {
+    if (!user.log) {
       user.exercises = [];
     }
     var exercise = {
@@ -70,11 +67,6 @@ exports.getExerciseLog = function (req, res, next) {
     if (err) {
       return next(err);
     }
-    res.json({
-      username: data.username,
-      description: last_exercise.description,
-      duration: last_exercise.duration,
-      _id: data._id,
-      date: last_exercise.date
-    });
+    res.json(user);
+  });
 }
