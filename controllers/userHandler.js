@@ -8,11 +8,9 @@ exports.createUser = function (req, res, next) {
       return next(err);
     }
     
-    delete data["__v"];
     res.json({
       _id: data._id,
-      username: data.username,
-      data: data
+      username: data.username
     });
   });
 };
@@ -65,3 +63,5 @@ exports.addExercise = function (req, res, next) {
     });
   });
 }
+
+exports.addExercise = function (req, res, next) {
