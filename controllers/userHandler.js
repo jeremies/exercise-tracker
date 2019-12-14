@@ -65,15 +65,19 @@ exports.addExercise = function (req, res, next) {
 
 exports.getExerciseLog = function (req, res, next) {
   let userId = req.query.userId;
+  let from = req.query.from;
+  let to = req.query.to;
   let limit = req.query.limit;
   User.findById(userId, function (err, user) {
     if (err) {
       return next(err);
     }
     user = user.toObject();
+    user.log = user.log.filter( exercise => {
+      return 
+    });
     if (limit) {
-      user.log = user.log.slice(limit - 1);
-      console.log(user.log);
+      user.log = user.log.slice(0,limit);
     }
     user.count = user.log.length;
     delete user.__v;
