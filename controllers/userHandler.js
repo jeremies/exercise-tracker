@@ -84,6 +84,16 @@ exports.getExerciseLog = function (req, res, next) {
     user.count = user.log.length;
     delete user.__v;
     user.log.forEach(exercise => { delete exercise._id; });
-    res.json(user);
+    
+    let resUser = {
+      _id: user._id,
+      username: user.username
+    };
+    
+    if (from) resUser.from = from;
+    if (to) resUser.to = to;
+    resUser.count = user.count;
+    resUser.log = user.log;
+    res.json(resUser);
   });
 }
