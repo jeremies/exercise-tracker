@@ -64,4 +64,17 @@ exports.addExercise = function (req, res, next) {
   });
 }
 
-exports.addExercise = function (req, res, next) {
+exports.getExerciseLog = function (req, res, next) {
+  var userId = req.query.userId;
+  User.findById(userId, function (err, user) {
+    if (err) {
+      return next(err);
+    }
+    res.json({
+      username: data.username,
+      description: last_exercise.description,
+      duration: last_exercise.duration,
+      _id: data._id,
+      date: last_exercise.date
+    });
+}

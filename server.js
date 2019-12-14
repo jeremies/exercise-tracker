@@ -28,6 +28,8 @@ app.get("/api/exercise/users", userHandler.getUsers);
 
 app.post("/api/exercise/add", userHandler.addExercise);
 
+app.get("/api/exercise/log", userHandler.getExerciseLog);
+
 // Not found middleware
 app.use((req, res, next) => {
   return next({status: 404, message: 'not found'})
