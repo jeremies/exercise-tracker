@@ -7,10 +7,12 @@ exports.createUser = function (req, res, next) {
     if (err) {
       return next(err);
     }
-
+    
+    delete data["__v"];
     res.json({
       _id: data._id,
-      username: data.username
+      username: data.username,
+      data: data
     });
   });
 };
