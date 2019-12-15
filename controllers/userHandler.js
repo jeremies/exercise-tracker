@@ -5,7 +5,6 @@ exports.createUser = function (req, res, next) {
   var user = new User({ username: username });
   user.save(function (err,savedUser) {
     if (err) {
-      console.log(err);
       return next(err);
     }
     savedUser = savedUser.toObject();
