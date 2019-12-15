@@ -3,7 +3,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-  username: String,
+  username: {
+    type: String, 
+    required: true,
+    unique: true,
+    maxlength: [20, 'username too long']
+  },
   log: [{ 
     description: String, 
     duration: Number, 
