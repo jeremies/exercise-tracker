@@ -11,7 +11,7 @@ exports.createUser = function (req, res, next) {
     delete savedUser.log;
     delete savedUser.__v;
     res.json(savedUser);
-  });
+  }); 
 };
 
 
